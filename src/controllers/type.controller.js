@@ -159,4 +159,35 @@ const updateType = async (req, res) => {
     }
 };
 
-module.exports = { createType, getAllTypes, getTypeById, updateType };
+// Eliminar un tipo por ID
+const deleteType = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Verificar si el tipo existe
+        const [existingType] = await pool.query("SELECT id FROM types WHERE id = ?", [id]);
+
+        if (existingType.length === 0) {
+            return res.status(404).json({ message: "Tipo no encontrado" });
+        }
+
+        // Eliminar las relaciones en type_properties
+        await pool.query("DELETE FROM type_properties WHERE type_id = ?", [id]);
+
+        // Eliminar el tipo de la tabla types
+        await pool.query("DELETE FROM types WHERE id = ?", [id]);
+
+        res.status(200).json({ message: "Tipo eliminado exitosamente" });
+    } catch (error) {
+        console.error("Error al eliminar tipo:", error);
+        res.status(500).json({ message: "Error en el servidor" });
+    }
+};
+
+module.exports = {
+  createType,
+  getAllTypes,
+  getTypeById,
+  updateType,
+  deleteType,
+};

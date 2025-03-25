@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use("/api/properties", propertyRoutes);
-app.use("/api", typeRoutes); // 👈 Asegúrate de que "/api" esté aquí
+app.use("/api", typeRoutes); 
 app.use(express.json()); // Middleware para procesar JSON
 
 app.get('/', (req, res) => {

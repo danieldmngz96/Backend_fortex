@@ -1,6 +1,30 @@
 const express = require("express");
 const { verifyToken, isAdmin, isUser } = require("../middlewares/authMiddleware");
 const router = express.Router();
+const {
+  createProperty,
+  getAllProperties,
+  getPropertyById,
+  updateProperty,
+  deleteProperty
+} = require("../controllers/property.controller");
+
+// Ruta para crear una propiedad
+router.post("/", createProperty);
+
+// Obtener todas las propiedades
+router.get("/", getAllProperties);
+
+// Obtener una propiedad por ID
+router.get("/:id", getPropertyById);
+
+// Actualizar una propiedad por ID
+router.put("/:id", updateProperty);
+
+// Eliminar una propiedad por ID
+router.delete("/:id", deleteProperty);
+
+
 
 // Rutas accesibles solo por admins
 router.post("/crear", verifyToken, isAdmin, (req, res) => {
